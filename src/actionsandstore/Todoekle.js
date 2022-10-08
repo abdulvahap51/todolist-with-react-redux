@@ -1,10 +1,12 @@
 import { createSlice } from "@reduxjs/toolkit";
+import alertify from "alertifyjs"
 
 export const Todoekle = createSlice({
   name: "Todoekle",
   initialState: {
     value: "",
     degertutucu: 1,
+    id:1
   },
   reducers: {
     getalltodos: (state) => {
@@ -18,6 +20,7 @@ export const Todoekle = createSlice({
     addtotodolist: (state, action) => {
       if (action.payload.description === "") {
         console.log("hata");
+        alertify.error("lütfen bir deger giriniz")
       }
 
     else {
@@ -31,11 +34,12 @@ export const Todoekle = createSlice({
       if(state.degertutucu===2){
         console.log("hata")
         state.degertutucu=1
+        alertify.error("lütfen farklı bir deger giriniz")
       }else{
         
         state.value.push(action);
       localStorage.setItem("todos", JSON.stringify(state.value))
-    
+      alertify.success("todo başarıyla eklendi")
     
 
       }
@@ -59,8 +63,18 @@ export const Todoekle = createSlice({
     })
     localStorage.setItem("todos",JSON.stringify(todos));
     },
+    removealltodos:(state)=>{
+      localStorage.removeItem("todos");
+      
+
+    },
+    addid:(state)=>{
+      state.id += 1
+
+    },
+    
   },
 });
-export const { getalltodos, addtotodolist, removefromtodolist } =
+export const { getalltodos, addtotodolist, removefromtodolist ,removealltodos,addid} =
   Todoekle.actions;
 export default Todoekle.reducer;
